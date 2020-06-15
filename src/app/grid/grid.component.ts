@@ -16,7 +16,7 @@ export class GridComponent implements OnInit {
 
   ngOnInit(): void {
     let die1: Array<string> = ["A", "E", "D", "N", "Z", "V"];
-    let die2: Array<string> = ["O", "A", "QU", "M", "B", "J"];
+    let die2: Array<string> = ["O", "A", "Qu", "M", "B", "J"];
     let die3: Array<string> = ["T", "S", "L", "P", "E", "U"];
     let die4: Array<string> = ["O", "E", "S", "W", "N", "D"];
     let die5: Array<string> = ["N", "G", "V", "T", "I", "E"];
