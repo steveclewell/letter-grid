@@ -8,13 +8,23 @@ import Prando from 'prando'
 })
 export class GridComponent implements OnInit {
 
-  seed: string = "seed5";
-  rng = new Prando(this.seed);
+  rng: Prando;
   board: Array<string> = new Array<string>();
+  hidden: boolean = true;
+  seed: string = "";
+  timerLength: number = 180;
+  timeLeft: number = this.timerLength;
+  interval;
 
   constructor() { }
 
   ngOnInit(): void {
+    
+  }
+
+  generateBoard() {
+    this.rng = new Prando(this.seed);
+
     let die1: Array<string> = ["A", "E", "D", "N", "Z", "V"];
     let die2: Array<string> = ["O", "A", "Qu", "M", "B", "J"];
     let die3: Array<string> = ["T", "S", "L", "P", "E", "U"];
@@ -75,5 +85,35 @@ export class GridComponent implements OnInit {
       array[randomIndex] = temporaryValue;
     }
     return array;
+  }
+
+  onKey() {
+    this.hidden = true;
+    clearInterval(this.interval);
+    this.generateBoard();
+  }
+
+  start() {
+    this.hidden = false;
+    this.timeLeft = this.timerLength;
+    this.startTimer();
+  }
+
+  startTimer() {
+    this.interval = setInterval(() => {
+      if(this.timeLeft > 0) {
+        this.timeLeft--;
+      } else {
+        this.playAudio();
+        clearInterval(this.interval);
+      }
+    },1000)
+  }
+
+  playAudio(){
+    let audio = new Audio();
+    audio.src = "../../../assets/audio/alarm.wav";
+    audio.load();
+    audio.play();
   }
 }

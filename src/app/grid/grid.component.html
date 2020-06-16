@@ -1,5 +1,8 @@
 <div style="width: 100%;">
-    <table>
+    <input [(ngModel)]="seed" (keyup)="onKey()">
+    <button [disabled]="!seed" (click)="start()">Start!</button>
+    <p>{{timeLeft}} Seconds Left....</p>
+    <table [hidden]="hidden">
         <tr>
             <td>{{board[0]}}</td>
             <td>{{board[1]}}</td>
