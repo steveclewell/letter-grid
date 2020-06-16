@@ -1,5 +1,5 @@
 <div style="width: 100%;">
-    <input [(ngModel)]="seed" (keyup)="onKey()">
+    <input [(ngModel)]="seed" (keyup)="onKey()" placeholder="Enter Seed Hit Start">
     <button [disabled]="!seed" (click)="start()">Start!</button>
     <p>{{timeLeft}} Seconds Left....</p>
     <table [hidden]="hidden">
