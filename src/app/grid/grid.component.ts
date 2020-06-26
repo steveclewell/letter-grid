@@ -1,20 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import Prando from 'prando'
+import { CountdownComponent, CountdownEvent } from 'ngx-countdown';
+
+enum TimerStatus {
+  Reset,
+  Running,
+  Paused
+}
 
 @Component({
   selector: 'app-grid',
   templateUrl: './grid.component.html',
   styleUrls: ['./grid.component.css']
 })
+
 export class GridComponent implements OnInit {
 
   rng: Prando;
   board: Array<string> = new Array<string>();
   hidden: boolean = true;
   seed: string = "";
-  timerLength: number = 180;
-  timeLeft: number = this.timerLength;
-  interval;
+
+  doneAlarm = new Audio();
+
+  TimerStatus = TimerStatus;
+  timerStatus: TimerStatus = TimerStatus.Reset;
+
+  @ViewChild('counter') counter: CountdownComponent;
 
   constructor() { }
 
@@ -88,32 +100,47 @@ export class GridComponent implements OnInit {
   }
 
   onKey() {
-    this.hidden = true;
-    clearInterval(this.interval);
+    this.restart();
     this.generateBoard();
   }
 
-  start() {
+  begin() {
+    this.doneAlarm.src = '';
+    this.doneAlarm.play();
+
     this.hidden = false;
-    this.timeLeft = this.timerLength;
-    this.startTimer();
+    this.timerStatus = TimerStatus.Running;
+    this.counter.restart();
+    this.counter.begin();
   }
 
-  startTimer() {
-    this.interval = setInterval(() => {
-      if(this.timeLeft > 0) {
-        this.timeLeft--;
-      } else {
-        this.playAudio();
-        clearInterval(this.interval);
-      }
-    },1000)
+  pause() {
+    this.hidden = true;
+    this.timerStatus = TimerStatus.Paused;
+    this.counter.pause();
+  }
+
+  resume() {
+    this.hidden = false;
+    this.timerStatus = TimerStatus.Running;
+    this.counter.resume();
+  }
+
+  restart() {
+    this.hidden = true;
+    this.timerStatus = TimerStatus.Reset;
+    this.counter.restart();
+  }
+
+  handleEvent(e: CountdownEvent) {
+    if (e.action === 'done') {
+      this.timerStatus = TimerStatus.Reset;
+      this.playAudio();
+    }
   }
 
   playAudio(){
-    let audio = new Audio();
-    audio.src = "../../../assets/audio/alarm.wav";
-    audio.load();
-    audio.play();
+    this.doneAlarm.src = "../../../assets/audio/alarm.wav";
+    this.doneAlarm.play();
   }
 }

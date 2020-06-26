@@ -6,6 +6,8 @@ import { GridComponent } from './grid/grid.component';
 
 import { FormsModule } from '@angular/forms';
 
+import { CountdownModule, CountdownGlobalConfig } from 'ngx-countdown';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -13,7 +15,8 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    CountdownModule
   ],
   providers: [],
   bootstrap: [AppComponent]

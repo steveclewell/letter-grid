@@ -1,7 +1,12 @@
 <div style="width: 100%;">
     <input [(ngModel)]="seed" (keyup)="onKey()" placeholder="Enter Seed Hit Start">
-    <button [disabled]="!seed" (click)="start()">Start!</button>
-    <p>{{timeLeft}} Seconds Left....</p>
+
+    <button [disabled]="!seed"  (click)="begin()" [hidden]="timerStatus !== TimerStatus.Reset">Start</button>
+    <button (click)="pause()" [hidden]="timerStatus !== TimerStatus.Running">Pause</button>
+    <button (click)="resume()" [hidden]="timerStatus !== TimerStatus.Paused">Resume</button>
+    <button (click)="restart()" [hidden]="timerStatus === TimerStatus.Reset">Reset</button>
+
+    <p>Time Remaining: <countdown #counter [config]="{leftTime: 180, demand: true, format: 'mm:ss'}" (event)="handleEvent($event)"></countdown></p>
     <table [hidden]="hidden">
         <tr>
             <td>{{board[0]}}</td>
