@@ -19,9 +19,8 @@ export class GridComponent implements OnInit {
   rng: Prando;
   board: Array<string> = new Array<string>();
   hidden: boolean = true;
+  timesUp: boolean = true;
   seed: string = "";
-
-  doneAlarm = new Audio();
 
   TimerStatus = TimerStatus;
   timerStatus: TimerStatus = TimerStatus.Reset;
@@ -105,9 +104,7 @@ export class GridComponent implements OnInit {
   }
 
   begin() {
-    this.doneAlarm.src = '';
-    this.doneAlarm.play();
-
+    this.timesUp = false;
     this.hidden = false;
     this.timerStatus = TimerStatus.Running;
     this.counter.restart();
@@ -135,12 +132,7 @@ export class GridComponent implements OnInit {
   handleEvent(e: CountdownEvent) {
     if (e.action === 'done') {
       this.timerStatus = TimerStatus.Reset;
-      this.playAudio();
+      this.timesUp = true;
     }
-  }
-
-  playAudio(){
-    this.doneAlarm.src = "../../../assets/audio/alarm.wav";
-    this.doneAlarm.play();
   }
 }
